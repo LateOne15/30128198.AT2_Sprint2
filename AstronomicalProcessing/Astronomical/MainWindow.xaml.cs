@@ -12,9 +12,9 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-// Lleyton Eggins, Sprint 1
+// Lleyton Eggins, Sprint 2
 // Date: 18/09/25
-// Version: 1.0
+// Version: 1.01
 // Astronomical Processing
 // Creates and displays a list of simulated neutrino data,
 // which can be sorted, searched and edited using textboxes and buttons
