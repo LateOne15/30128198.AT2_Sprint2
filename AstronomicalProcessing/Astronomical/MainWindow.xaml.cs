@@ -58,13 +58,8 @@ namespace Astronomical
         //}
         #endregion
 
-        private void SortList() // Bubble Sort
+        private List<int> SortList(List<int> ints) // Bubble Sort
         {
-            List<int> ints = new List<int>();
-            foreach (int i in lbxDataList.Items) //moves the datalist items into new array
-            {
-                ints.Add(i);
-            }
             int iterations = ints.Count; 
             for (int i = 0; i < iterations - 1; i++) // occurs one less than the array length
             {
@@ -78,11 +73,7 @@ namespace Astronomical
                     }
                 }
             }
-            lbxDataList.Items.Clear(); // remove the existing list order, then repopulate with the new ordered list
-            foreach (int i in ints)
-            {
-                lbxDataList.Items.Add(i);
-            }
+            return ints;
 
             // Sort directly through C# implementations instead of Bubble Sort
             //List<int> ints = new List<int>();
@@ -100,12 +91,18 @@ namespace Astronomical
 
         private int BinarySearch(int x)
         {
-            SortList(); // always needs to sort before binary search
             List<int> ints = new List<int>();
-            foreach (int i in lbxDataList.Items)
+            foreach (int i in lbxDataList.Items) //moves the datalist items into new array
             {
                 ints.Add(i);
             }
+            ints = SortList(ints); // always needs to sort before binary search
+            lbxDataList.Items.Clear(); // remove the existing list order, then repopulate with the new ordered list
+            foreach (int i in ints)
+            {
+                lbxDataList.Items.Add(i);
+            }
+
             int min = 0, max = ints.Count - 1, mid;
             while (min <= max)
             {
@@ -124,7 +121,7 @@ namespace Astronomical
                     max = mid - 1;
                 }
             }
-            return -1; // if btnSearch_Click sees this number, otherwise unavailable within the random range, it knows the search failed
+            return -1; // if btnSearch_Click sees this number, otherwise unavailable within the array bounds, it knows the search failed
             
             // Search directly through C# implementations instead of Binary Seach
             //int temp = int.Parse(tbSearch.Text);
@@ -166,7 +163,17 @@ namespace Astronomical
 
         private void btnSort_Click(object sender, RoutedEventArgs e)
         {
-            SortList(); // bubble sort method
+            List<int> ints = new List<int>();
+            foreach (int i in lbxDataList.Items) //moves the datalist items into new array
+            {
+                ints.Add(i);
+            }
+            ints = SortList(ints); // bubble sort method
+            lbxDataList.Items.Clear(); // remove the existing list order, then repopulate with the new ordered list
+            foreach (int i in ints)
+            {
+                lbxDataList.Items.Add(i);
+            }
         }
 
         private void btnEdit_Click(object sender, RoutedEventArgs e)
