@@ -17,8 +17,8 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 
 // Lleyton Eggins, Sprint 2
-// Date: 18/09/25
-// Version: 1.01
+// Date: 25/09/25
+// Version: 2.00
 // Astronomical Processing
 // Creates and displays a list of simulated neutrino data,
 // which can be sorted, searched and edited using textboxes and buttons
@@ -33,7 +33,7 @@ namespace Astronomical
         public MainWindow()
         {
             InitializeComponent();
-            tbtnBinary.IsChecked = true;
+            tbtnBinary.IsChecked = true; // defaults search to binary
             int[] ints = new int[24];
             Random rnd = new Random();
             for (int i = 0; i < 24; i++) // randomly assigns 24 values to an array with min 10 and max 90
@@ -110,7 +110,7 @@ namespace Astronomical
             }
 
             int min = 0, max = ints.Count - 1, mid;
-            while (min <= max)
+            while (min <= max) // the binary search itself
             {
                 mid = (min + max) >> 1; // halves the integer using bitshift
                 if (ints[mid] == x)
@@ -118,11 +118,11 @@ namespace Astronomical
                     return mid; // once a match is found, returns the index of the match and exits the function
                 }
 
-                if (ints[mid] < x)
+                if (ints[mid] < x) // shouldn't go lower, so sets minimum to one more than itself
                 {
                     min = mid + 1;
                 }
-                else
+                else // shouldn't go higher, so sets max to one less than itself
                 {
                     max = mid - 1;
                 }
@@ -158,7 +158,7 @@ namespace Astronomical
                     return i; // if a match is found, return the index
                 }
             }
-            return -1;
+            return -1; // error return; no index of -1 exists
         }
 
         #endregion
@@ -175,31 +175,31 @@ namespace Astronomical
             return mean;
         }
 
-        private List<int> AverageMode(List<int> ints)
+        private List<int> AverageMode(List<int> ints) // mode calculation
         {
             List<int> mode = new List<int>();
-            mode.Add(1);
-            int duplicates = 1, mostFrequent = 0;
-            int[] frequency = new int[ints.Last() + 1];
-            for (int i=0;i<frequency.Length;i++)
+            mode.Add(1); // ensures the mode has something in it, just in case
+            int mostFrequent = 0; // stores the highest reccurences so far. If this number increases, it removes the existing modes
+            int[] frequency = new int[ints.Last() + 1]; // creates array large enough to store all possible values as frequency table
+            for (int i=0;i<frequency.Length;i++) // initialises the array
             {
                 frequency[i] = 0;
             }
-            foreach (int i in ints)
+            foreach (int i in ints) // sets each element to the frequency of its occurence in the data list
             {
                 frequency[i]++;
             }
-            for (int i=0;i<frequency.Length;i++)
-            {
-                if (frequency[i] > mostFrequent)
+            for (int i=0;i<frequency.Length;i++) // mode finding
+            { 
+                if (frequency[i] > mostFrequent) // in case of more reoccuring number
                 {
-                    mostFrequent = frequency[i];
-                    mode.Clear();
-                    mode.Add(i);
+                    mostFrequent = frequency[i]; // new highest occurence
+                    mode.Clear(); // remove existing modes
+                    mode.Add(i); // add new one
                 }
-                else if (frequency[i] == mostFrequent)
+                else if (frequency[i] == mostFrequent) // in case of equally occuring number
                 {
-                    mode.Add(i);
+                    mode.Add(i); // just add to the list
                 }
             }
             return mode;
@@ -207,14 +207,14 @@ namespace Astronomical
 
         private double AverageRange (List<int> ints)
         {
-            double range = ints.Last() - ints.First();
-            return range;
+            double range = ints.Last() - ints.First(); // needs to be passed a sorted list
+            return range; 
         }
 
         private double AverageMidExtreme (List<int> ints)
         {
-            double midExtreme = (ints.Last() + ints.First()) / 2;
-            return midExtreme;
+            double midExtreme = (ints.Last() + ints.First()) / 2.0; // needs to be passed a sorted list. without the .0, will only return whole numbers
+            return midExtreme; 
         }
 
         #endregion
@@ -232,18 +232,21 @@ namespace Astronomical
                 {
                     success = SequentialSearch(searchInt); // method for sequential searching
                 }
-                if (success != -1) // -1 is an error return, means no match found
-                {
-                    lbxDataList.SelectedItem = lbxDataList.Items.GetItemAt(success);
-                    DisplayMessage($"Match found at index {lbxDataList.SelectedIndex}!", "Found"); // tells index number starting at 0
-                }
-                else if (success == -1) // in case of no match
-                {
-                    DisplayError("No match found in list.", "Unsuccessful");
-                }
-                else // in case of somehow entering method with neither search method checked
+                if (tbtnBinary.IsChecked == false && tbtnSequential.IsChecked == false) // in case of somehow entering method with neither search method checked
                 {
                     DisplayError("No search method selected.", "Error");
+                }
+                else
+                {
+                    if (success != -1) // -1 is an error return, means no match found
+                    {
+                        lbxDataList.SelectedItem = lbxDataList.Items.GetItemAt(success);
+                        DisplayMessage($"Match found at index {lbxDataList.SelectedIndex}!", "Found"); // tells index number starting at 0
+                    }
+                    else if (success == -1) // in case of no match
+                    {
+                        DisplayError("No match found in list.", "Unsuccessful");
+                    }
                 }
             }
             else // input error display
@@ -291,6 +294,7 @@ namespace Astronomical
                     lbxDataList.Items.Insert(lbxDataList.SelectedIndex, value); // places the edited item where the old one currently is, moving it forward
                     lbxDataList.Items.Remove(lbxDataList.SelectedItem); // unedited item is still selected, now removes it
                     lbxDataList.SelectedIndex = selector; // moves the selection to the new item
+                    RefreshStats(); // data has changed, remove statistics that are now out of date
                 }
             }
             else // in case of bad or missing edit term
@@ -299,7 +303,7 @@ namespace Astronomical
             }
             tbEdit.Text = string.Empty; // removes the edit text
         }
-
+    // these two methods swap the buttons depending on which one is pressed to ensure only one is enabled at a time
         private void tbtn_Checked(object sender, RoutedEventArgs e)
         {
             if (sender == tbtnBinary)
@@ -325,7 +329,8 @@ namespace Astronomical
         }
         private void btnRefresh_Click(object sender, RoutedEventArgs e)
         {
-            lbxDataList.Items.Clear();
+            lbxDataList.Items.Clear(); // removes old data first
+            RefreshStats(); // new data means old stats are unusuable
             int[] ints = new int[24];
             Random rnd = new Random();
             for (int i = 0; i < 24; i++) // randomly assigns 24 values to an array with min 10 and max 90
@@ -341,36 +346,53 @@ namespace Astronomical
         private void btnCalculate_Click(object sender, RoutedEventArgs e)
         {
             List<int> ints = new List<int>();
-            foreach (int i in lbxDataList.Items) //moves the datalist items into new array
+            foreach (int i in lbxDataList.Items) // moves the datalist items into new array
             {
                 ints.Add(i);
             }
-            ints = SortList(ints);
-            double mean = AverageMean(ints);
+            ints = SortList(ints); // sorts the duplicate list
+            // Series of statistic methods. Range and Mid-Extreme require the list to be sorted, while mode returns a list in case of multimodal data
+            double mean = AverageMean(ints); 
             List<int> mode = AverageMode(ints);
             double range = AverageRange(ints);
             double midExtreme = AverageMidExtreme(ints);
-
-            tbMean.Text = mean.ToString("F", CultureInfo.InvariantCulture);
-            if (mode.Count > 1)
+            // statstic data display
+            tbMean.Text = mean.ToString("F", CultureInfo.InvariantCulture); // decimal to two places
+            tbMean.ToolTip = mean.ToString("G", CultureInfo.InvariantCulture); // displays a more accurate version in the tooltip
+            if (mode.Count > 1) // if multimodal
             {
                 string modeText = string.Empty;
                 foreach (int i in mode)
                 {
-                    modeText += i.ToString("F",CultureInfo.InvariantCulture);
+                    modeText += i.ToString("G",CultureInfo.InvariantCulture); // ignores decimals (which are zeroes) for space concerns
                     if (i != mode.Last())
                     {
-                        modeText += ", ";
+                        modeText += ", "; // prints them in a comma separated list
                     }
                 }
-                tbMode.Text = modeText;
+                tbModeNum.Text = "{"+mode.Count+"}"; // extra display of how many modes there are
+                tbMode.ToolTip=modeText; // will display all modes, even ones that don't fit in the table, in the tooltip
+                tbMode.Text = modeText; // actually prints the modes to the GUI
             }
-            else
+            else // if single mode
             {
                 tbMode.Text = mode.First().ToString("F", CultureInfo.InvariantCulture);
+                tbMode.ToolTip = "Single Mode"; // an empty tooltip will still appear, so make it descriptive instead
+                tbModeNum.Text = string.Empty; // removes the count display for single modes
             }
             tbRange.Text = range.ToString("F", CultureInfo.InvariantCulture);
             tbMidExtreme.Text = midExtreme.ToString("F", CultureInfo.InvariantCulture);
+        }
+
+        private void RefreshStats() // called for both data refresh and when data is edited, changing statistics
+        {
+            tbMean.Text = string.Empty;
+            tbMean.ToolTip = string.Empty; // tooltips for empty text boxes shouldn't be visible but clear it anyway
+            tbMode.Text = string.Empty;
+            tbMode.ToolTip = string.Empty; // also removes the tooltip from mode, and the count display
+            tbModeNum.Text = string.Empty;
+            tbRange.Text = string.Empty;
+            tbMidExtreme.Text = string.Empty;
         }
     }
 }

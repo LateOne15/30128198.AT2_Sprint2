@@ -15,17 +15,17 @@
             <StackPanel DockPanel.Dock="Top" Orientation="Vertical">
                 <GridSplitter Height="10"/>
                 <WrapPanel Orientation="Horizontal">
-                    <Button x:Name="btnSearch" Content="Search:" Width="60" Click="btnSearch_Click"/>
+                    <Button x:Name="btnSearch" Content="Search:" Width="60" Click="btnSearch_Click" ToolTipService.ToolTip="Search Data Using Selected Method"/>
                     <TextBox x:Name="tbSearch" Width="100"/>
                 </WrapPanel>
                 <WrapPanel Orientation="Horizontal">
-                    <ToggleButton x:Name="tbtnBinary" Content="Binary" Width="80" Checked="tbtn_Checked" Unchecked="tbtn_Unchecked"/>
-                    <ToggleButton x:Name="tbtnSequential" Content="Sequential" Width="80" Checked="tbtn_Checked" Unchecked="tbtn_Unchecked"/>
+                    <ToggleButton x:Name="tbtnBinary" Content="Binary" Width="80" Checked="tbtn_Checked" Unchecked="tbtn_Unchecked" ToolTipService.ToolTip="Binary Search Method (Sorts List)"/>
+                    <ToggleButton x:Name="tbtnSequential" Content="Sequential" Width="80" Checked="tbtn_Checked" Unchecked="tbtn_Unchecked" ToolTipService.ToolTip="Sequential Search Method (Does Not Sort)"/>
                 </WrapPanel>
                 <GridSplitter Height="20"/>
-                <Button x:Name="btnSort" Content="Sort" Width="60" HorizontalAlignment="Left" Click="btnSort_Click"/>
+                <Button x:Name="btnSort" Content="Sort" Width="60" HorizontalAlignment="Left" Click="btnSort_Click" ToolTipService.ToolTip="Sorts Data Using Bubble Sort"/>
                 <GridSplitter Height="20"/>
-                <Button x:Name="btnCalculate" Content="Calculate Statistic Data" Width="160" HorizontalAlignment="Left" Click="btnCalculate_Click"/>
+                <Button x:Name="btnCalculate" Content="Calculate Statistic Data" Width="160" HorizontalAlignment="Left" Click="btnCalculate_Click" ToolTipService.ToolTip="Calculate Statistics From Data"/>
                 <GridSplitter Height="20"/>
                 <Grid Width="160" HorizontalAlignment="Left">
                     <Grid.RowDefinitions>
@@ -39,21 +39,24 @@
                         <ColumnDefinition Width="70"/>
                     </Grid.ColumnDefinitions>
                     <TextBlock Text="Average (Mean):" Grid.Column="0" Grid.Row="0"/>
-                    <TextBlock Text="Mode:" Grid.Column="0" Grid.Row="1"/>
+                    <WrapPanel Grid.Column="0" Grid.Row="1">
+                        <TextBlock Text="Mode:  "/>
+                        <TextBlock x:Name="tbModeNum" ToolTipService.ToolTip="Number of Modes (Data is Multi-Modal)"/>
+                    </WrapPanel>
                     <TextBlock Text="Range:" Grid.Column="0" Grid.Row="2"/>
                     <TextBlock Text="Mid-Extreme:" Grid.Column="0" Grid.Row="3"/>
                     <TextBlock x:Name="tbMean" Grid.Column="1" Grid.Row="0" HorizontalAlignment="Right" />
-                    <TextBlock x:Name="tbMode" Grid.Column="1" Grid.Row="1" HorizontalAlignment="Right"/>
+                    <TextBlock x:Name="tbMode" Grid.Column="1" Grid.Row="1" HorizontalAlignment="Right" ToolTipService.ToolTip=""/>
                     <TextBlock x:Name="tbRange" Grid.Column="1" Grid.Row="2" HorizontalAlignment="Right"/>
                     <TextBlock x:Name="tbMidExtreme" Grid.Column="1" Grid.Row="3" HorizontalAlignment="Right"/>
                 </Grid>
                 <GridSplitter Height="20"/>
                 <WrapPanel Orientation="Horizontal">
-                    <Button x:Name="btnEdit" Content="Edit Selected:" Width="90" Click="btnEdit_Click"/>
+                    <Button x:Name="btnEdit" Content="Edit Selected:" Width="90" Click="btnEdit_Click" ToolTipService.ToolTip="Edits Selected Data Point To Be New Value"/>
                     <TextBox x:Name="tbEdit" Width="70"/>
                 </WrapPanel>
                 <GridSplitter Height="20"/>
-                <Button x:Name="btnRefresh" Content="Refresh Data" Width="100" HorizontalAlignment="Left" Click="btnRefresh_Click"/>
+                <Button x:Name="btnRefresh" Content="Refresh Data" Width="100" HorizontalAlignment="Left" Click="btnRefresh_Click" ToolTipService.ToolTip="Replaces Data Set With New Data"/>
             </StackPanel>
         </DockPanel>
     </DockPanel>
