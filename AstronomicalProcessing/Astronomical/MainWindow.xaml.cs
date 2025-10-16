@@ -18,7 +18,7 @@ using System.Windows.Shapes;
 
 // Lleyton Eggins, Sprint 2
 // Date: 25/09/25
-// Version: 2.00
+// Version: 2.10
 // Astronomical Processing
 // Creates and displays a list of simulated neutrino data,
 // which can be sorted, searched and edited using textboxes and buttons
@@ -163,61 +163,6 @@ namespace Astronomical
 
         #endregion
 
-        #region Math
-        private double AverageMean(List<int> ints) // mean calculation
-        {
-            double sum = 0;
-            foreach (int i in ints) // sum all elements
-            {
-                sum += i;
-            }
-            double mean = sum / ints.Count; // divide by count
-            return mean;
-        }
-
-        private List<int> AverageMode(List<int> ints) // mode calculation
-        {
-            List<int> mode = new List<int>();
-            mode.Add(1); // ensures the mode has something in it, just in case
-            int mostFrequent = 0; // stores the highest reccurences so far. If this number increases, it removes the existing modes
-            int[] frequency = new int[ints.Last() + 1]; // creates array large enough to store all possible values as frequency table
-            for (int i=0;i<frequency.Length;i++) // initialises the array
-            {
-                frequency[i] = 0;
-            }
-            foreach (int i in ints) // sets each element to the frequency of its occurence in the data list
-            {
-                frequency[i]++;
-            }
-            for (int i=0;i<frequency.Length;i++) // mode finding
-            { 
-                if (frequency[i] > mostFrequent) // in case of more reoccuring number
-                {
-                    mostFrequent = frequency[i]; // new highest occurence
-                    mode.Clear(); // remove existing modes
-                    mode.Add(i); // add new one
-                }
-                else if (frequency[i] == mostFrequent) // in case of equally occuring number
-                {
-                    mode.Add(i); // just add to the list
-                }
-            }
-            return mode;
-        }
-
-        private double AverageRange (List<int> ints)
-        {
-            double range = ints.Last() - ints.First(); // needs to be passed a sorted list
-            return range; 
-        }
-
-        private double AverageMidExtreme (List<int> ints)
-        {
-            double midExtreme = (ints.Last() + ints.First()) / 2.0; // needs to be passed a sorted list. without the .0, will only return whole numbers
-            return midExtreme; 
-        }
-
-        #endregion
         private void btnSearch_Click(object sender, RoutedEventArgs e)
         {
             string searchTerm = tbSearch.Text;
@@ -352,10 +297,10 @@ namespace Astronomical
             }
             ints = SortList(ints); // sorts the duplicate list
             // Series of statistic methods. Range and Mid-Extreme require the list to be sorted, while mode returns a list in case of multimodal data
-            double mean = AverageMean(ints); 
-            List<int> mode = AverageMode(ints);
-            double range = AverageRange(ints);
-            double midExtreme = AverageMidExtreme(ints);
+            double mean = StatsMath.AverageMean(ints); 
+            List<int> mode = StatsMath.AverageMode(ints);
+            double range = StatsMath.AverageRange(ints);
+            double midExtreme = StatsMath.AverageMidExtreme(ints);
             // statstic data display
             tbMean.Text = mean.ToString("F", CultureInfo.InvariantCulture); // decimal to two places
             tbMean.ToolTip = mean.ToString("G", CultureInfo.InvariantCulture); // displays a more accurate version in the tooltip
