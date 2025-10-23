@@ -18,7 +18,7 @@ using System.Windows.Shapes;
 
 // Lleyton Eggins, Sprint 2
 // Date: 25/09/25
-// Version: 2.10
+// Version: 2.20
 // Astronomical Processing
 // Creates and displays a list of simulated neutrino data,
 // which can be sorted, searched and edited using textboxes and buttons
@@ -296,7 +296,7 @@ namespace Astronomical
                 ints.Add(i);
             }
             ints = SortList(ints); // sorts the duplicate list
-            // Series of statistic methods. Range and Mid-Extreme require the list to be sorted, while mode returns a list in case of multimodal data
+            // Series of statistic methods. Mode, Range and Mid-Extreme require the list to be sorted, while Mode returns a list in case of multimodal data
             double mean = StatsMath.AverageMean(ints); 
             List<int> mode = StatsMath.AverageMode(ints);
             double range = StatsMath.AverageRange(ints);

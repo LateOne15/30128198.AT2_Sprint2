@@ -24,12 +24,12 @@ namespace Astronomical
             List<int> mode = new List<int>();
             mode.Add(1); // ensures the mode has something in it, just in case
             int mostFrequent = 0; // stores the highest reccurences so far. If this number increases, it removes the existing modes
-            int[] frequency = new int[ints.Last() + 1]; // creates array large enough to store all possible values as frequency table
+            int[] frequency = new int[ints.Last() + 1]; // creates array large enough to store all possible values as frequency table. this must have a sorted list
             for (int i = 0; i < frequency.Length; i++) // initialises the array
             {
                 frequency[i] = 0;
             }
-            foreach (int i in ints) // sets each element to the frequency of its occurence in the data list. this means this function must have a sorted list
+            foreach (int i in ints) // sets each element to the frequency of its occurence in the data list
             {
                 frequency[i]++;
             }

@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("AstronomicalTest")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+f2964505e3ebb743ae48c64f3d5f9477a947b704")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+cdc092f698d41250f1ccae38559a2cccca198bc8")]
 [assembly: System.Reflection.AssemblyProductAttribute("AstronomicalTest")]
 [assembly: System.Reflection.AssemblyTitleAttribute("AstronomicalTest")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
